@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 
 class Hungry() : State() {
-    val timeToBeHungry = 6
+    override val timeTo = 6
 
     override fun awake(): (AtomicInteger) -> Unit =
         { awake: AtomicInteger -> awake.andIncrement }
@@ -21,7 +21,7 @@ class Hungry() : State() {
         next: State
     ): Boolean {
         return basicVerify(next)
-                && (monster.withOutEat.get() < timeToBeHungry
+                && (monster.withOutEat.get() < timeTo
                 || next is Dead
                 || next is Starving)
     }

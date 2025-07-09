@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 abstract class State {
     open val duration: Int = 1
+    open val timeTo: Int = Int.MAX_VALUE
     val timeTracking: AtomicInteger = AtomicInteger(0)
     lateinit var monster: Monster
     var possibles: Array<State> = emptyArray()
@@ -13,7 +14,6 @@ abstract class State {
     abstract fun awake(): (AtomicInteger) -> Unit
     abstract fun sleep(): (AtomicInteger) -> Unit
     abstract fun withOutEat(): (AtomicInteger) -> Unit
-
     abstract fun shouldChange(monster: Monster, next: State): Boolean
 
     fun info(days: Int, counter: Int): Unit =

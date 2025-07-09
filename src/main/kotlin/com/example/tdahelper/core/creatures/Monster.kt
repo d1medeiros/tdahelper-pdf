@@ -23,9 +23,7 @@ abstract class Monster(firstState: State): Creature {
         }
     }
 
-    fun run(days: Int, counter: Int) {
-        state.run(days, counter)
-    }
+    fun run(days: Int, counter: Int) = state.run(days, counter)
 
     fun clean(){
         awake.set(0)

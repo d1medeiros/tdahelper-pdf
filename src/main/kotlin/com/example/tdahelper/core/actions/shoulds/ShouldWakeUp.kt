@@ -18,7 +18,7 @@ class ShouldWakeUp(val state: Idle) : Action {
             mstate is Sleeping
                     && mstate.timeTracking.get() >= mstate.duration
                 -> monster.changeState(state, message) { monster ->
-                    monster.awake.set(0)
+                    monster.sleep.set(0)
             }
             else -> monster
         }

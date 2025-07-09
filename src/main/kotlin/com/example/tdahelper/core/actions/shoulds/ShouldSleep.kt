@@ -14,8 +14,8 @@ class ShouldSleep(val state: Sleeping) : Action {
         val get = monster.awake.get()
         val message = "soninho.. - ${logTime.invoke(counter, days)}"
         return when {
-            get > state.timeToBeSleepy -> monster.changeState(state, message) { monster ->
-                    monster.sleep.set(0)
+            get > state.timeTo -> monster.changeState(state, message) { monster ->
+                    monster.awake.set(0)
             }
             else -> monster
         }
