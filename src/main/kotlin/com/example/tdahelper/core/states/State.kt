@@ -10,7 +10,9 @@ abstract class State {
     lateinit var monster: Monster
     var possibles: Array<State> = emptyArray()
 
-    abstract fun time()
+    abstract fun awake(): (AtomicInteger) -> Unit
+    abstract fun sleep(): (AtomicInteger) -> Unit
+    abstract fun withOutEat(): (AtomicInteger) -> Unit
 
     abstract fun shouldChange(monster: Monster, next: State): Boolean
 
@@ -41,17 +43,29 @@ abstract class State {
         return this
     }
 
-    fun basicVerify( next: State,): Boolean {
+    fun basicVerify( next: State): Boolean {
         return this.possibles.contains(next)
                 && timeTracking.get() >= duration
                 && next != this
     }
 
     fun run(days: Int, counter: Int) {
-        time()
+        this.monster.apply {
+            awake().invoke(awake)
+            sleep().invoke(sleep)
+            withOutEat().invoke(withOutEat)
+        }
         timeTracking.incrementAndGet()
         info(days, counter)
     }
+
+    override fun toString(): String {
+        return "[${javaClass.simpleName}] " +
+                " - withOutEat:${monster.withOutEat.get()} " +
+                "sleep:${monster.sleep.get()} " +
+                "awake:${monster.awake.get()}"
+    }
+
 
 }
 

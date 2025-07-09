@@ -1,21 +1,16 @@
 ## states
 ```mermaid
 flowchart LR
-    Idle-->Sleeping
-    Idle-->Hungry
-    Idle-->Dead
-    Sleeping-->Idle
-    Sleeping-->Hungry
-    Sleeping-->Dead
-    Hungry-->Idle
-    Hungry-->Dead
+    Idle-->|by awaken time|Sleeping
+    Idle-->|by withoutEat time|Hungry
+    Idle-->|by times|Dead
+    Sleeping-->|tracking time over|Idle
+    Sleeping-->|tracking time over - by withoutEat time|Hungry
+    Sleeping-->|by times|Dead
+    Hungry-->|by withoutEat time|Idle
+    Hungry-->|by withoutEat time|Starving
+    Hungry-->|by withoutEat time|Dead
+    Starving-->|by withoutEat time|Idle
+    Starving-->|by withoutEat time|Dead
 ```
-
-## actions
-
-- should die      [1] its conditions
-- should hungry   [?] its conditions and only if not dead or sleep
-- should sleep    [?] its conditions and only if awaken
-- should wake up  [?] its conditions and only if asleep
-- go eat          [?] its conditions and only if not dead or sleep
 

@@ -17,16 +17,14 @@ class ShouldDie(val state: Dead) : Action {
     ): Monster {
         val withOutEat = monster.withOutEat.get()
         return when {
-            dayWithHours.invoke(counter, days) > monster.maxAge() -> monster.changeState(
-                state,
-                "morreu de velhice - ${logTime.invoke(counter, days)}"
-            ) { }
-
-            withOutEat.hoursToDays() > 2 -> monster.changeState(
-                state,
-                "morreu de fome - ${logTime.invoke(counter, days)}"
-            ) {  }
-
+            dayWithHours.invoke(counter, days) > monster.maxAge()
+                -> monster.changeState(state, "morreu de velhice - ${logTime.invoke(counter, days)}") { m->
+                    m.clean()
+            }
+            withOutEat.hoursToDays() > 2
+                -> monster.changeState(state, "morreu de fome - ${logTime.invoke(counter, days)}") { m->
+                m.clean()
+            }
             else -> monster
         }
     }

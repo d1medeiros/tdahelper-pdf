@@ -3,22 +3,20 @@ package com.example.tdahelper.core.actions.shoulds
 import com.example.tdahelper.core.actions.Action
 import com.example.tdahelper.core.creatures.Monster
 import com.example.tdahelper.core.logTime
-import com.example.tdahelper.core.states.Sleeping
+import com.example.tdahelper.core.states.Hungry
+import com.example.tdahelper.core.states.Starving
 
-class ShouldSleep(val state: Sleeping) : Action {
+class ShouldStarving(val state: Starving) : Action {
     override fun execute(
         monster: Monster,
         days: Int,
         counter: Int
     ): Monster {
-        val get = monster.awake.get()
-        val message = "soninho.. - ${logTime.invoke(counter, days)}"
+        val get = monster.withOutEat.get()
         return when {
-            get > state.timeToBeSleepy -> monster.changeState(state, message) { monster ->
-                    monster.sleep.set(0)
-            }
+            get >= state.timeToBeStarving
+                -> monster.changeState(state, "essa fome é de matar - ${logTime.invoke(counter, days)}"){}
             else -> monster
         }
     }
-
 }

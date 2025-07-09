@@ -12,9 +12,10 @@ class GoEat(val state: Idle) : Action {
         counter: Int
     ): Monster {
         monster.withOutEat.set(0)
+        println("hummm matei a fome - ${logTime.invoke(counter, days)}")
        return monster.changeState(
            state,
-           "hummm matei a fome - ${logTime.invoke(counter, days)}"
+           ""
        ) {}
     }
 }

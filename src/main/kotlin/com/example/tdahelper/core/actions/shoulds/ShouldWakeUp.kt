@@ -13,14 +13,13 @@ class ShouldWakeUp(val state: Idle) : Action {
         counter: Int
     ): Monster {
         val mstate = monster.state
+        val message = "acordei - ${logTime.invoke(counter, days)}"
         return when {
             mstate is Sleeping
-                    && mstate.timeTracking.get() >= mstate.duration ->
-                monster.changeState(
-                    state,
-                    "acordei - ${logTime.invoke(counter, days)}"
-                ) { }
-
+                    && mstate.timeTracking.get() >= mstate.duration
+                -> monster.changeState(state, message) { monster ->
+                    monster.awake.set(0)
+            }
             else -> monster
         }
     }
