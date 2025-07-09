@@ -1,41 +1,94 @@
 package com.example.tdahelper
 
-import com.example.tdahelper.actions.CategorySummaryActionFile
-import com.example.tdahelper.actions.DebugChainActionFile
-import com.example.tdahelper.actions.FirstCategoryActionFile
-import com.example.tdahelper.actions.FormatAmountActionFile
-import com.example.tdahelper.model.Category
-import java.io.File
+import com.example.tdahelper.core.Duration
+import com.example.tdahelper.core.DurationType.DAY
+import com.example.tdahelper.core.DurationType.HOUR
+import com.example.tdahelper.core.StateManager
+import com.example.tdahelper.core.TimeCapsule
+import com.example.tdahelper.core.actions.goes.GoEat
+import com.example.tdahelper.core.actions.shoulds.ShouldDie
+import com.example.tdahelper.core.actions.shoulds.ShouldHungry
+import com.example.tdahelper.core.actions.shoulds.ShouldSleep
+import com.example.tdahelper.core.actions.shoulds.ShouldWakeUp
+import com.example.tdahelper.core.creatures.Monster
+import com.example.tdahelper.core.states.Dead
+import com.example.tdahelper.core.states.Hungry
+import com.example.tdahelper.core.states.Idle
+import com.example.tdahelper.core.states.Sleeping
+import com.example.tdahelper.core.states.State
 
 
-fun main(args: Array<String>) {
-    val path = "/home/aianwhat/googledrive-remote/gastos/2025_maio"
-    val classifier = CategoryClassifier(
-        bias = mapOf(
-            Category.PET to listOf("pet", "veterinario", "ANIMAL"),
-            Category.IFOOD to listOf("ifood", "ifd"),
-            Category.FARMACIA to listOf("farmacia", "drogaria", "RDSAUDE"),
-            Category.STREAM to listOf("apple", "NETFLIX", "disney", "MICROSOFT", "AWS", "SPOTIFY", "sonyplaystatn", "amazon", "Prime"),
-            Category.UBER to listOf("uber", "trip"),
-            Category.VESTUARIO to listOf("renner", "foxton"),
-            Category.ACADEMIA to listOf("smartfit", "smart", "totalpass"),
-            Category.RESTAURANTE to listOf("restaurante"),
-            Category.AUTOMOVEL to listOf("POSTO"),
-            Category.VIAGEM to listOf("AZUL", "linhas"),
+fun main() {
+    //STATES
+    val sleeping = Sleeping()
+    val idle = Idle()
+    val dead = Dead()
+    val hungry = Hungry()
+    sleeping.possibles = arrayOf(idle, dead, hungry)
+    idle.possibles = arrayOf(sleeping, dead, hungry)
+    dead.possibles = emptyArray<State>()
+    hungry.possibles = arrayOf(idle, dead)
+
+    //ACTIONS
+    val shouldSleep = ShouldSleep(sleeping)
+    val shouldWakeUp = ShouldWakeUp(idle)
+    val shouldDie = ShouldDie(dead)
+    val shouldHungry = ShouldHungry(hungry)
+
+    val exoMonster = object : Monster(idle) {
+        override fun maxAge(): Int = Duration(6, DAY).parse()
+    }
+
+    val timeCapsule = TimeCapsule(
+        stateManager = StateManager(
+            list = listOf(
+                shouldSleep,
+                shouldWakeUp,
+                shouldDie,
+                shouldHungry,
+            )
         )
     )
-    val debugChainActionFile = DebugChainActionFile()
-    val categorySummaryActionFile = CategorySummaryActionFile(debugChainActionFile)
-    val formatAmountActionFile = FormatAmountActionFile(categorySummaryActionFile)
-    val firstCategoryActionFile = FirstCategoryActionFile(formatAmountActionFile, classifier)
-    val tdaHelper = TDAHelper(firstCategoryActionFile, Writer(path))
-//    args.firstOrNull()?.let { path ->
-        listAllFilesWithKotlinWalk(path)
-            .forEach { file ->
-            val fileRead = file.absolutePath
-            tdaHelper.input(File(fileRead))
-        }
-//    }
-    tdaHelper.process()
-    tdaHelper.write("output.csv")
+
+    timeCapsule.nextWeek(
+        exoMonster,
+        mapOf(
+            Duration(
+                11,
+                HOUR
+            ).parse() to listOf(GoEat(idle)),
+            Duration(
+                1,
+                DAY,
+                Duration(8, HOUR)
+            ).parse() to listOf(GoEat(idle)),
+            Duration(
+                2,
+                DAY,
+                Duration(8, HOUR)
+            ).parse() to listOf(GoEat(idle)),
+            Duration(
+                3,
+                DAY,
+                Duration(8, HOUR)
+            ).parse() to listOf(GoEat(idle)),
+            Duration(
+                4,
+                DAY,
+                Duration(8, HOUR)
+            ).parse() to listOf(GoEat(idle)),
+            Duration(
+                5,
+                DAY,
+                Duration(8, HOUR)
+            ).parse() to listOf(GoEat(idle)),
+            Duration(
+                6,
+                DAY,
+                Duration(8, HOUR)
+            ).parse() to listOf(GoEat(idle)),
+
+        )
+    )
 }
+

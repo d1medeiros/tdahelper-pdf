@@ -18,10 +18,9 @@ repositories {
 }
 
 dependencies {
+    implementation("io.github.stefanbratanov:jvm-openai:0.11.0")
     implementation(kotlin("stdlib"))
-    implementation("org.tribuo:tribuo-all:4.3.2@pom"){
-        isTransitive = true
-    }
+   
     implementation("com.jsoizo:kotlin-csv-jvm:1.10.0")
     implementation("com.github.tabulapdf:tabula-java:1.0.5")
     testImplementation(kotlin("test"))
