@@ -13,13 +13,13 @@ abstract class State {
 
     abstract fun awake(): (AtomicInteger) -> Unit
     abstract fun sleep(): (AtomicInteger) -> Unit
-    abstract fun withOutEat(): (AtomicInteger) -> Unit
+    abstract fun hungry(): (AtomicInteger) -> Unit
     abstract fun shouldChange(monster: Monster, next: State): Boolean
 
     fun info(days: Int, counter: Int): Unit =
         println("[${javaClass.simpleName}] " +
                 logTime.invoke(counter, days) +
-            " - withOutEat:${monster.withOutEat.get()} " +
+            " - hungry:${monster.hungry.get()} " +
                 "sleep:${monster.sleep.get()} " +
                 "awake:${monster.awake.get()}"
         )
@@ -33,7 +33,7 @@ abstract class State {
         if (shouldChange(monster, next)) {
             function.invoke(monster)
             timeTracking.set(0)
-            println(message+" - withOutEat:${monster.withOutEat.get()} " +
+            println(message+" - hungry:${monster.hungry.get()} " +
                     "sleep:${monster.sleep.get()} " +
                     "awake:${monster.awake.get()}")
             return next.apply {
@@ -53,7 +53,7 @@ abstract class State {
         this.monster.apply {
             awake().invoke(awake)
             sleep().invoke(sleep)
-            withOutEat().invoke(withOutEat)
+            hungry().invoke(hungry)
         }
         timeTracking.incrementAndGet()
         info(days, counter)
@@ -61,7 +61,7 @@ abstract class State {
 
     override fun toString(): String {
         return "[${javaClass.simpleName}] " +
-                " - withOutEat:${monster.withOutEat.get()} " +
+                " - hungry:${monster.hungry.get()} " +
                 "sleep:${monster.sleep.get()} " +
                 "awake:${monster.awake.get()}"
     }

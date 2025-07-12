@@ -11,7 +11,7 @@ class ShouldHungry(val state: Hungry) : Action {
         days: Int,
         counter: Int
     ): Monster {
-        val get = monster.withOutEat.get()
+        val get = monster.hungry.get()
         return when {
             get >= state.timeTo
                 -> monster.changeState(state, "to com fome - ${logTime.invoke(counter, days)}"){}

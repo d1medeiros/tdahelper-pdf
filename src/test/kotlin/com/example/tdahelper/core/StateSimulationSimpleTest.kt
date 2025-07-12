@@ -25,7 +25,7 @@ class StateSimulationSimpleTest: StateMachineConfig() {
         )//4h
         result = timeCapsule.next(result)//5h
         assertTrue { result.state is Idle }
-        assertEquals(1, result.withOutEat.get())
+        assertEquals(1, result.hungry.get())
     }
 
     @Test
@@ -39,7 +39,7 @@ class StateSimulationSimpleTest: StateMachineConfig() {
         result = timeCapsule.next(result)//6h
         result = timeCapsule.next(result)//7h
         assertTrue { result.state is Hungry }
-        assertEquals(7, result.withOutEat.get())
+        assertEquals(7, result.hungry.get())
     }
 
     @Test
@@ -48,7 +48,7 @@ class StateSimulationSimpleTest: StateMachineConfig() {
         var result = timeCapsule.nextDay(exoMonster)   //1D
         result = timeCapsule.nextDay(result)//2D
         assertTrue { result.state is Starving }
-        assertEquals(24, result.withOutEat.get())
+        assertEquals(24, result.hungry.get())
     }
 
     @Test

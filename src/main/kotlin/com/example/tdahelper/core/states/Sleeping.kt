@@ -14,8 +14,8 @@ open class Sleeping() : State() {
     override fun sleep(): (AtomicInteger) -> Unit =
         { sleep: AtomicInteger -> sleep.andIncrement }
 
-    override fun withOutEat(): (AtomicInteger) -> Unit =
-        { withOutEat: AtomicInteger -> withOutEat.andIncrement }
+    override fun hungry(): (AtomicInteger) -> Unit =
+        { hungry: AtomicInteger -> hungry.andIncrement }
 
     override fun shouldChange(
         monster: Monster,

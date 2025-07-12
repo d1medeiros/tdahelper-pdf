@@ -8,7 +8,7 @@ class Dead() : State() {
 
     override fun awake() =  {awake: AtomicInteger-> awake.set(0)}
     override fun sleep() =  {sleep: AtomicInteger-> sleep.set(0)}
-    override fun withOutEat() =  {withOutEat: AtomicInteger-> withOutEat.set(0)}
+    override fun hungry() =  { hungry: AtomicInteger-> hungry.set(0)}
 
     override fun shouldChange(
         monster: Monster,

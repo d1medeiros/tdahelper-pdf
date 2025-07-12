@@ -11,8 +11,8 @@ class Grumpy() : State() {
     override fun sleep(): (AtomicInteger) -> Unit =
         { sleep: AtomicInteger -> sleep.andIncrement }
 
-    override fun withOutEat(): (AtomicInteger) -> Unit =
-        { withOutEat: AtomicInteger -> withOutEat.updateAndGet { i -> i + 2}}
+    override fun hungry(): (AtomicInteger) -> Unit =
+        { hungry: AtomicInteger -> hungry.updateAndGet { i -> i + 2}}
 
     override fun shouldChange(
         monster: Monster,

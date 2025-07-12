@@ -13,15 +13,15 @@ class Hungry() : State() {
     override fun sleep(): (AtomicInteger) -> Unit =
         { sleep: AtomicInteger -> sleep.andIncrement }
 
-    override fun withOutEat(): (AtomicInteger) -> Unit =
-        { withOutEat: AtomicInteger -> withOutEat.andIncrement }
+    override fun hungry(): (AtomicInteger) -> Unit =
+        { hungry: AtomicInteger -> hungry.andIncrement }
 
     override fun shouldChange(
         monster: Monster,
         next: State
     ): Boolean {
         return basicVerify(next)
-                && (monster.withOutEat.get() < timeTo
+                && (monster.hungry.get() < timeTo
                 || next is Dead
                 || next is Starving)
     }
